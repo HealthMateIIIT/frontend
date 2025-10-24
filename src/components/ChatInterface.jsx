@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, Mic, MicOff, Volume2, Loader2, Copy, CheckCheck } from 'lucide-react';
+import { Send, Mic, MicOff, Volume2, Loader2, Copy, CheckCheck, MapPin, AlertCircle } from 'lucide-react';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
 import useSpeechSynthesis from '../hooks/useSpeechSynthesis';
+import useLocationServices from '../hooks/useLocationServices';
 import axios from 'axios';
+import NearbyHospitals from './NearbyHospitals';
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState(() => {
@@ -19,7 +21,11 @@ const ChatInterface = () => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
+  const [showHospitals, setShowHospitals] = useState(false);
   const chatContainerRef = useRef(null);
+  
+  // Initialize location services
+  const locationServices = useLocationServices();
   
   const {
     isListening,
@@ -86,9 +92,19 @@ const ChatInterface = () => {
       console.error('Error sending message:', error);
       
       // Fallback response for demo purposes
+      let messageText = "I apologize, but I'm currently unable to connect to the server. ";
+      
+      if (isOffline && locationServices.hospitals?.length > 0) {
+        messageText += "You appear to be offline. Would you like to see nearby hospitals?";
+      } else if (isOffline) {
+        messageText += "You appear to be offline. Some features may be limited.";
+      } else {
+        messageText += "Please ensure your backend API is running at the configured endpoint.";
+      }
+      
       const aiMessage = {
         id: Date.now() + 1,
-        text: "I apologize, but I'm currently unable to connect to the server. This is a demo interface. Please ensure your backend API is running at the configured endpoint.",
+        text: messageText,
         sender: 'ai',
         timestamp: new Date().toISOString(),
       };
@@ -136,9 +152,28 @@ const ChatInterface = () => {
     });
   };
 
+  const isOffline = !navigator.onLine;
+  const showOfflineHelp = isOffline && locationServices.hospitals && locationServices.hospitals.length > 0;
+
   return (
     <div className="h-full flex flex-col max-w-4xl mx-auto w-full">
       {/* Chat Messages Area */}
+      {showOfflineHelp && (
+        <div className="bg-blue-50 border-b border-blue-200">
+          <div className="max-w-4xl mx-auto px-4 py-2 flex justify-between items-center">
+            <div className="flex items-center text-sm text-blue-800">
+              <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span>You're offline. Tap to view nearby hospitals.</span>
+            </div>
+            <button
+              onClick={() => setShowHospitals(true)}
+              className="text-sm font-medium text-blue-600 hover:text-blue-700 px-3 py-1 rounded-md hover:bg-blue-100"
+            >
+              View Hospitals
+            </button>
+          </div>
+        </div>
+      )}
       <div
         ref={chatContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-4 chat-container"
@@ -265,6 +300,13 @@ const ChatInterface = () => {
           )}
         </button>
       </div>
+      
+      {/* Nearby Hospitals Modal */}
+      <NearbyHospitals 
+        isOpen={showHospitals} 
+        onClose={() => setShowHospitals(false)}
+        locationServices={locationServices}
+      />
     </div>
   );
 };
