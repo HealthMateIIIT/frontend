@@ -3,10 +3,12 @@ import { Send, Mic, MicOff, Volume2, Loader2, Copy, CheckCheck, MapPin, AlertCir
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
 import useSpeechSynthesis from '../hooks/useSpeechSynthesis';
 import useLocationServices from '../hooks/useLocationServices';
+import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import NearbyHospitals from './NearbyHospitals';
 
 const ChatInterface = () => {
+  const { user } = useAuth();
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('chatHistory');
     return saved ? JSON.parse(saved) : [
@@ -58,6 +60,12 @@ const ChatInterface = () => {
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || isLoading) return;
+    
+    if (!user || !user.id) {
+      console.error('User not authenticated');
+      // You might want to redirect to login or show an error message
+      return;
+    }
 
     const userMessage = {
       id: Date.now(),
@@ -71,13 +79,13 @@ const ChatInterface = () => {
     setIsLoading(true);
 
     try {
-      // Use environment variable for API URL, fallback to relative path
-      const apiUrl = import.meta.env.VITE_API_URL 
-        ? `${import.meta.env.VITE_API_URL}/query`
-        : '/query';
+      // Use environment variable for API URL, fallback to current host
+      const baseUrl = import.meta.env.VITE_API_URL || window.location.origin;
+      const apiUrl = `${baseUrl}/api/chat`;
       
       const response = await axios.post(apiUrl, {
-        query: inputText,
+        message: inputText,
+        user_id: user.id  // Include the user ID in the request
       });
 
       const aiMessage = {
