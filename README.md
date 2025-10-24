@@ -94,7 +94,7 @@ healthmate/
 
 ### Backend API Integration
 
-The app expects a backend API endpoint at `/api/query` that accepts POST requests:
+The app expects a backend API endpoint at `/query` that accepts POST requests:
 
 ```javascript
 // Request format

@@ -31,26 +31,26 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
-# Install backend dependencies if needed
-if [ ! -d "backend-example/venv" ]; then
-    echo -e "${BLUE}📦 Setting up Python virtual environment...${NC}"
-    cd backend-example
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    cd ..
-fi
+# # Install backend dependencies if needed
+# if [ ! -d "backend-example/venv" ]; then
+#     echo -e "${BLUE}📦 Setting up Python virtual environment...${NC}"
+#     cd backend-example
+#     python3 -m venv venv
+#     source venv/bin/activate
+#     pip install -r requirements.txt
+#     cd ..
+# fi
 
-# Start backend in background
-echo -e "${GREEN}🚀 Starting Backend API (http://localhost:8000)...${NC}"
-cd backend-example
-source venv/bin/activate
-python app.py &
-BACKEND_PID=$!
-cd ..
+# # Start backend in background
+# echo -e "${GREEN}🚀 Starting Backend API (http://localhost:8000)...${NC}"
+# cd backend-example
+# source venv/bin/activate
+# python app.py &
+# BACKEND_PID=$!
+# cd ..
 
-# Wait for backend to start
-sleep 3
+# # Wait for backend to start
+# sleep 3
 
 # Start frontend
 echo -e "${GREEN}🚀 Starting Frontend (http://localhost:3000)...${NC}"
@@ -61,8 +61,8 @@ echo ""
 echo -e "${GREEN}✅ Development environment is running!${NC}"
 echo ""
 echo "📡 Frontend: http://localhost:3000"
-echo "📡 Backend API: http://localhost:8000"
-echo "📚 API Docs: http://localhost:8000/docs"
+echo "📡 Backend API: http://localhost:5000"
+echo "📚 API Docs: http://localhost:5000/docs"
 echo ""
 echo "Press Ctrl+C to stop both servers"
 echo ""

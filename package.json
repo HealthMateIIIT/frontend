@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "HealthMate AI - Privacy-Preserving Health Assistant PWA",
   "private": true,
+  "type": "module",
   "dependencies": {
     "axios": "^1.6.2",
     "lucide-react": "^0.294.0",

@@ -67,11 +67,11 @@ const ChatInterface = () => {
     try {
       // Use environment variable for API URL, fallback to relative path
       const apiUrl = import.meta.env.VITE_API_URL 
-        ? `${import.meta.env.VITE_API_URL}/api/query`
-        : '/api/query';
+        ? `${import.meta.env.VITE_API_URL}/query`
+        : '/query';
       
       const response = await axios.post(apiUrl, {
-        prompt: inputText,
+        query: inputText,
       });
 
       const aiMessage = {
