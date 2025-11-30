@@ -54,7 +54,7 @@ export default defineConfig({
     host: "0.0.0.0",
     proxy: {
     '/query': {
-      target: 'https://backend-healthmate-rvfx.onrender.com',
+      target: 'https://healthmateai-backend-480017532396.europe-west1.run.app/',
       changeOrigin: true
     }
   }

@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   // Set up axios defaults
   axios.defaults.withCredentials = true;
-  axios.defaults.baseURL = 'https://backend-healthmate-rvfx.onrender.com/api';
+  axios.defaults.baseURL = 'https://healthmateai-backend-480017532396.europe-west1.run.app/api';
 
   // Check if user is already logged in
   useEffect(() => {
