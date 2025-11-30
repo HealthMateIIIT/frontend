@@ -54,7 +54,7 @@ export default defineConfig({
     host: "0.0.0.0",
     proxy: {
     '/query': {
-      target: 'http://localhost:5000',
+      target: 'https://backend-healthmate-rvfx.onrender.com',
       changeOrigin: true
     }
   }
