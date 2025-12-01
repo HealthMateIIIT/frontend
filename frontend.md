@@ -1,6 +1,4 @@
-Perfect 👍 Susheel — this is a great point to start structuring your **HealthMate frontend** for the hackathon. You already have the backend logic (URL that accepts text prompts and responds), so let’s break down what your **frontend should do and contain**, both functionally and design-wise.
 
----
 
 ## 🧩 Functional Features for the Frontend
 
